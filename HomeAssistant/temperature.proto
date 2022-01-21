@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+service TemperatureService{
+    rpc setTemperature (Temperature) returns (Empty) {}
+}
+
+
+message Empty{}
+
+message Temperature{
+    int32 TemperatureValue = 1;
+}
