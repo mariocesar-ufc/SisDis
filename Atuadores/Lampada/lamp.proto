@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+service LampService{
+    rpc turnLampOn (Empty) returns (Empty) {}
+    rpc turnLampOff (Empty) returns (Empty) {}
+    
+}
+
+message Empty{}

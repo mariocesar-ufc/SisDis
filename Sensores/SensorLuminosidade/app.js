@@ -1,8 +1,8 @@
 
 var amqp = require('amqplib/callback_api');
 
-const QUEUE = 'TEMPERATURA'
-const DELAY = 3000;
+const QUEUE = 'LUMINOSIDADE'
+const DELAY = 6000;
 
 amqp.connect('amqp://localhost', function(error0, connection) {
     if (error0) {
@@ -18,9 +18,9 @@ amqp.connect('amqp://localhost', function(error0, connection) {
         });
 
         setInterval(() => {
-            var temperature = String(Math.random() * (30 - 25) + 25);
-            console.log(`Temperatura enviada ${temperature}`);
-            channel.sendToQueue(QUEUE, Buffer.from(temperature));
+            var luminosity = String(Math.random() * (100 - 50) + 50);
+            console.log(`Nivel de luminosidade: ${luminosity}`);
+            channel.sendToQueue(QUEUE, Buffer.from(luminosity));
 
         }, DELAY)
     });

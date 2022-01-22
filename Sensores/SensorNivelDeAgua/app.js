@@ -1,8 +1,8 @@
 
 var amqp = require('amqplib/callback_api');
 
-const QUEUE = 'TEMPERATURA'
-const DELAY = 3000;
+const QUEUE = 'NIVELAGUA'
+const DELAY = 10000;
 
 amqp.connect('amqp://localhost', function(error0, connection) {
     if (error0) {
@@ -18,9 +18,9 @@ amqp.connect('amqp://localhost', function(error0, connection) {
         });
 
         setInterval(() => {
-            var temperature = String(Math.random() * (30 - 25) + 25);
-            console.log(`Temperatura enviada ${temperature}`);
-            channel.sendToQueue(QUEUE, Buffer.from(temperature));
+            var waterLevel = String(Math.random() * (35 - 30) + 30);
+            console.log(`Nivel de agua: ${waterLevel}`);
+            channel.sendToQueue(QUEUE, Buffer.from(waterLevel));
 
         }, DELAY)
     });

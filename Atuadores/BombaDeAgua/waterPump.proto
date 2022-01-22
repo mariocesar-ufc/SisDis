@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+service WaterPumpService{
+    rpc setWaterPumpSpeed (Speed) returns (Empty) {}
+}
+
+message Empty{}
+
+message Speed{
+    int32 SpeedValue = 1;
+}

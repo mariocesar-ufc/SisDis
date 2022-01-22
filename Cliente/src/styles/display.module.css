@@ -1,0 +1,25 @@
+.display {
+  width: var(--display-size);
+  height: var(--display-size);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.labelTitle {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.labelValue {
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.labelUnit {
+  font-size: 20px;
+  font-weight: 200;
+}

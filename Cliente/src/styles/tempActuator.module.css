@@ -1,0 +1,39 @@
+.label {
+  font-size: 24px;
+  text-align: right;
+}
+
+.control {
+  background-color: whitesmoke;
+  color: black;
+  padding: 4px 2px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.control input {
+  width: 80%;
+  border: none;
+  font-size: 20px;
+  text-align: right;
+}
+
+.control input:focus {
+  outline: 0;
+}
+
+.control button {
+  border: none;
+  padding: 2px 8px;
+  font-weight: 800;
+  color: rgb(96, 157, 159);
+  cursor: pointer;
+}
+
+.control button:hover {
+  background-color: rgba(0, 255, 255, 0.2);
+  border-radius: 0.25rem;
+}

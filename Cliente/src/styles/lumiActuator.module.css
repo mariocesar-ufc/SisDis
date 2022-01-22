@@ -1,0 +1,25 @@
+.control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.control button {
+  background-color: transparent;
+  color: #f5f5f5;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 8px;
+  border-style: none;
+}
+
+.control button:active {
+  background-color: #aeaeae1a;
+  color: #aeaeae;
+}
+
+.control button:hover {
+  background-color: #aeaeae33;
+}
