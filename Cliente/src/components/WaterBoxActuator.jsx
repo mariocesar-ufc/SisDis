@@ -6,14 +6,16 @@ import waterBoxStyles from "../styles/waterActuator.module.css"
 const { actuator } = styles
 const { slider, sliderContainer, label } = waterBoxStyles
 
-export default function TemperatureActuator({ color }) {
+export default function TemperatureActuator(props) {
+
+    const {color, handler} = props
 
     const [waterLevel, setWaterLevel] = useState(20);
 
     function onChange(e) {
         setWaterLevel(Number.parseFloat(e.target.value))
 
-        //TODO
+        handler(Number.parseFloat(e.target.value))
         console.log(`O nível atual de água é de: ${waterLevel}`)
     }
 

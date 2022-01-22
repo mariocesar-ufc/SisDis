@@ -7,8 +7,7 @@ let BASE_TEMPERATURE = 25
 server.addService(temperatureProto.TemperatureService.service, {
     setTemperature :  (call, callback) => {
         let newTemperatureRequest = call.request
-        console.log(call.request.TemperatureValue)
-        console.log('teste')
+        console.log(`Nova temperatura alterada para ${call.request.TemperatureValue}`)
         if(newTemperatureRequest.TemperatureValue) BASE_TEMPERATURE = newTemperatureRequest.TemperatureValue
     }
 })

@@ -7,7 +7,7 @@ let BASE_SPEED = 25
 server.addService(waterPumpProto.WaterPumpService.service, {
     setWaterPumpSpeed :  (call, callback) => {
         let newWaterPumpSpeedRequest = call.request
-        console.log(call.request.SpeedValue)
+        console.log(`Velocidade da bomba d'agua alterada com sucesso para ${call.request.SpeedValue}`)
         if(newWaterPumpSpeedRequest.SpeedValue) BASE_SPEED = newWaterPumpSpeedRequest.SpeedValue
     }
 })

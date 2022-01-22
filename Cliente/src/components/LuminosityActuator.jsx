@@ -12,8 +12,8 @@ export default function LuminosityActuator(props) {
     const [isON, setState] = useState(false)
 
     function onClick() {
-        setState(!isON);
         handler(!isON)
+        setState(!isON);
         //TODO
         console.log(`Estado da lâmpada: ${isON ? 'ligada' : 'delisgada'}`)
     }

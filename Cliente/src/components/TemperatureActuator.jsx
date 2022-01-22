@@ -6,8 +6,8 @@ import temperatureStyles from "../styles/tempActuator.module.css"
 const { actuator } = styles
 const { label, control } = temperatureStyles
 
-export default function TemperatureActuator({ color }) {
-
+export default function TemperatureActuator(props) {
+    const {color, handler} = props
     const [temperature, setTemperature] = useState(0)
 
     function onChange(e) {
@@ -15,7 +15,7 @@ export default function TemperatureActuator({ color }) {
     }
 
     function onClick() {
-        // TODO
+        handler(temperature)
         console.log(`A temperatura é de ${temperature} graus`)
     }
 

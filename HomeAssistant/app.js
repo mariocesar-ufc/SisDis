@@ -8,6 +8,7 @@ const socket = require('socket.io')
 
 const protoTemperature = protoLoader.loadSync('temperature.proto')
 const protoPump = protoLoader.loadSync('waterPump.proto')
+const protoLamp = protoLoader.loadSync('lamp.proto')
 
 const app = express();
 const httpConn = http.createServer(app)
@@ -16,20 +17,64 @@ const io = new socket.Server(httpConn, { transports: ['websocket', 'polling', 'f
 httpConn.listen("8080", "localhost", () => {})
 const temperatureClient = grpc.loadPackageDefinition(protoTemperature)
 const waterPumpClient = grpc.loadPackageDefinition(protoPump)
-
+const lampClient = grpc.loadPackageDefinition(protoLamp)
 
 
 const clientTemperature = new temperatureClient.TemperatureService('127.0.0.1:50051', grpc.credentials.createInsecure())
 const clientWaterPump = new waterPumpClient.WaterPumpService('127.0.0.1:50052', grpc.credentials.createInsecure())
-
+const clientLamp = new lampClient.LampService('127.0.0.1:50053', grpc.credentials.createInsecure())
 
 const TemperatureQueue = 'TEMPERATURA';
 const WaterLevelQueue = 'NIVELAGUA';
 const LuminosityQueue = 'LUMINOSIDADE'
+
 io.on("connection", (socket) => {
     
     socket.on('lamp', (msg) => {
         console.log(msg)
+        let Empty = {}
+
+        if(msg == false){
+            console.log("Lampada apagada com sucesso")
+            clientLamp.turnLampOff(Empty, (err, res) =>{
+                if(!err){
+                    console.log("Lampada apagada com sucesso")
+                }
+            });
+        }
+        if(msg == true){
+            console.log("Lampada apagada com sucesso")
+            clientLamp.turnLampOn(Empty, (err, res) =>{
+                if(!err){
+                    console.log("Lampada acesa com sucesso")
+                }
+            });
+        }
+    })
+
+    socket.on('waterLevel', (msg) => {
+        
+        let Speed = {
+            SpeedValue: msg
+        }
+        console.log(`Velocidade da bomba alterada com sucesso para ${msg}`)
+        clientWaterPump.setWaterPumpSpeed(Speed, (err, res) => {
+            if(!err){
+                console.log(`Velocidade da bomba alterada com sucesso para ${msg}`)
+            }
+        })
+    })
+
+    socket.on('acTemperature', (msg) => {
+        console.log(`Temperatura alterada para ${msg} com sucesso`)        
+        let Temperature = {
+            TemperatureValue: msg
+        }
+        clientTemperature.setTemperature(Temperature, (err, res) => {
+                if(!err){
+                    console.log(`Temperatura alterada para ${msg} com sucesso`)
+                }
+        })
     })
     
 amqp.connect('amqp://localhost', function(error, connection) {
@@ -45,26 +90,11 @@ amqp.connect('amqp://localhost', function(error, connection) {
             durable: false
         });
 
-        io.on('lamp', (data) => {
-            console.log(data)
-        })
         
         channel.prefetch(1);
         channel.consume(TemperatureQueue, function(msg) {
             var secs = msg.content.toString().split('.').length - 1;
-            let Temperature = {
-                TemperatureValue: 1
-            }
-            clientTemperature.setTemperature(Temperature, (err, res) => {
-
-            })
-            let Speed = {
-                SpeedValue: 1
-            }
-           
-            clientWaterPump.setWaterPumpSpeed(Speed, (err, res) => {
-
-            })
+            
 
             console.log(msg.content.toString())
 

@@ -7,11 +7,11 @@ let LAMP_STATUS = false
 server.addService(lampProto.LampService.service, {
     turnLampOn :  (call, callback) => {
        LAMP_STATUS = true
-       console.log(LAMP_STATUS)
+       console.log("Lampada ligada com sucesso")
     },
     turnLampOff : (call, callback) => {
         LAMP_STATUS = false
-        console.log(LAMP_STATUS)
+        console.log("Lampada desligada com sucesso")
 
     }
 })

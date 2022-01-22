@@ -5,7 +5,7 @@ import Display from "./components/Display";
 import TemperatureActuator from "./components/TemperatureActuator";
 import LuminosityActuator from "./components/LuminosityActuator"
 import WaterBoxActuator from "./components/WaterBoxActuator"
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 
 import "./styles/App.css";
 
@@ -15,43 +15,70 @@ const socket = io('http://localhost:8080',  { transports: ['websocket', 'polling
 function App() 
 {
 const iconSize = 40
+
+
+
 const [temperature, setTemperature] = useState(25)
-const [luminosity, setLuminosity] = useState(25)
 const [waterLevel, setWaterLevel] = useState(20)
+const luminosity = useRef(25)
+
 
 const [isLampOn, setLampOn] = useState(false)
-useEffect(() => {
-    console.log(isLampOn)
+const [actualWaterLevel, setActualWaterLevel] = useState(false)
+const [AcTemperature, setAcTemperature] = useState(false)
 
-    
-}, [isLampOn])
-socket.on('connect', () => {
-  socket.emit('lamp',isLampOn )
-
-
+socket.on('temperature', (msg) => {
+  console.log(msg)
+  var convertedValue = parseFloat(msg).toFixed(2)
+  setTemperature(convertedValue)
+  socket.off('temperature', () => {})
 })
-  socket.on('temperature', (msg) => {
-    console.log(msg)
-    var convertedValue = parseFloat(msg).toFixed(2)
-    setTemperature(convertedValue)
-    socket.emit('lamp',isLampOn )
 
-  })
+
+useEffect(() => {
+  console.log(isLampOn)
+  socket.emit('lamp', isLampOn)
+}, [isLampOn])
+
+useEffect(() => {
+  console.log(actualWaterLevel)
+  socket.emit('waterLevel', actualWaterLevel)
+
+}, [actualWaterLevel])
+
+useEffect(() => {
+  console.log(AcTemperature)
+  socket.emit('acTemperature', AcTemperature)
+
+}, [AcTemperature])
+
+useEffect(() => {
 
   socket.on('luminosity', (msg) => {
     console.log(msg)
     var convertedValue = parseFloat(msg).toFixed(2)
-    setLuminosity(convertedValue)
-    socket.emit('lamp',isLampOn )
+    luminosity.current = convertedValue
+    console.log('teste')
 
   })
+}, [luminosity])
+
+socket.on('connect', () => {
+ 
+
+})
+
+  socket.on('temperature', (msg) => {
+    
+
+  })
+
 
 
   socket.on('waterLevel', (msg) => {
     console.log(msg)
     var convertedValue = parseFloat(msg).toFixed(2)
     setWaterLevel(convertedValue)
-    socket.emit('lamp',isLampOn )
 
   })
 
@@ -75,7 +102,7 @@ socket.on('connect', () => {
             <Display
               icon={<MdBrightness7 size={iconSize} />}
               title={"Luminosidade"}
-              value={luminosity}
+              value={luminosity.current}
               color={'#407020'}
             />
             <Display
@@ -84,9 +111,9 @@ socket.on('connect', () => {
               value={waterLevel}
               color={'#702050'}
             />
-            <TemperatureActuator color={'#803090'} />
+            <TemperatureActuator color={'#803090'} handler={setAcTemperature}/>
             <LuminosityActuator color={'#608030'} handler={setLampOn}/>
-            <WaterBoxActuator color={'#803060'} />
+            <WaterBoxActuator color={'#803060'} handler={setActualWaterLevel}/>
           </div>
         </div>
       </main>
