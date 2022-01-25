@@ -1,4 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect, useContext } from "react"
+
+import {SocketContext} from '../context/socket';
+
+
+
 import { BsFillLightbulbFill, BsFillLightbulbOffFill } from "react-icons/bs"
 
 import styles from "../styles/actuator.module.css"
@@ -8,11 +13,16 @@ const { actuator } = styles
 const { control } = luminosityStyles
 
 export default function LuminosityActuator(props) {
-    const {color, handler} = props
+    const {color} = props
     const [isON, setState] = useState(false)
 
+    const socket = useContext(SocketContext);
+
+    useEffect(() => {
+        socket.emit('lamp', isON)
+    }, [socket, isON])
+
     function onClick() {
-        handler(!isON)
         setState(!isON);
         //TODO
         console.log(`Estado da lâmpada: ${isON ? 'ligada' : 'delisgada'}`)

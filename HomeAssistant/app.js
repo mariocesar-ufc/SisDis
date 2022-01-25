@@ -31,7 +31,6 @@ const LuminosityQueue = 'LUMINOSIDADE'
 io.on("connection", (socket) => {
     
     socket.on('lamp', (msg) => {
-        console.log(msg)
         let Empty = {}
 
         if(msg == false){
@@ -96,7 +95,6 @@ amqp.connect('amqp://localhost', function(error, connection) {
             var secs = msg.content.toString().split('.').length - 1;
             
 
-            console.log(msg.content.toString())
 
             io.emit('temperature', msg.content.toString())
             channel.ack(msg);
@@ -108,7 +106,6 @@ amqp.connect('amqp://localhost', function(error, connection) {
 
         channel.consume(WaterLevelQueue, function(msg) {
             var secs = msg.content.toString().split('.').length - 1;
-            console.log(msg.content.toString())
 
             io.emit('waterLevel', msg.content.toString())
            
@@ -125,7 +122,6 @@ amqp.connect('amqp://localhost', function(error, connection) {
             }
            
             io.emit('luminosity', msg.content.toString())
-            console.log(msg.content.toString())
            
                 channel.ack(msg);
        
